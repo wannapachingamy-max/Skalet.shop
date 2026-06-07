@@ -1,41 +1,68 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>My Pastel Queue ✨</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
+    <title>My Pastel Planner ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #FFF5F7; font-family: 'Kanit', sans-serif; color: #A0767D; display: flex; justify-content: center; padding: 20px; }
-        .card { background: white; padding: 30px; border-radius: 30px; width: 100%; max-width: 400px; box-shadow: 0 10px 20px rgba(255, 183, 197, 0.3); }
-        h2 { text-align: center; color: #FF9AA2; }
-        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
-        input { border: 2px solid #FFD1DC; border-radius: 15px; padding: 10px; flex-grow: 1; outline: none; }
-        button { background-color: #FFB7C5; color: white; border: none; padding: 10px 20px; border-radius: 15px; cursor: pointer; }
-        ul { list-style: none; padding: 0; }
-        li { background: #FFF5F7; padding: 10px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .done { text-decoration: line-through; opacity: 0.6; }
+        :root { --soft-pink: #FFD1DC; --main-pink: #FFB7C5; --text-pink: #A0767D; --bg-color: #FFF5F7; }
+        body { background-color: var(--bg-color); font-family: 'Kanit', sans-serif; color: var(--text-pink); display: flex; justify-content: center; padding: 20px; }
+        
+        .container { background: white; padding: 25px; border-radius: 40px; width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(255, 183, 197, 0.2); }
+        h2 { text-align: center; color: #FF9AA2; margin-bottom: 20px; }
+
+        /* การจัดหมวดหมู่ */
+        .category-section { margin-bottom: 20px; border-bottom: 2px solid #FFF5F7; padding-bottom: 10px; }
+        .category-title { font-weight: 500; color: #FF9AA2; margin-bottom: 5px; display: block; }
+        
+        button#addBtn { width: 100%; background-color: var(--main-pink); color: white; border: none; padding: 12px; border-radius: 20px; cursor: pointer; font-size: 1rem; margin-top: 10px; }
+        
+        /* Modal (Pop-up) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.1); justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 25px; border-radius: 30px; width: 80%; max-width: 300px; text-align: center; }
+        input, select { width: 90%; padding: 10px; margin: 10px 0; border: 2px solid var(--soft-pink); border-radius: 15px; outline: none; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>รายการคิววันนี้ 🎀</h2>
-    <div class="input-group">
-        <input type="text" id="taskInput" placeholder="เพิ่มคิวงานตรงนี้...">
-        <button onclick="addTask()">เพิ่ม</button>
+<div class="container">
+    <h2>🎀 My Queue List</h2>
+    <div id="listContainer">
+        <div class="category-section" id="workList"><span class="category-title">💼 งาน (Work)</span><ul id="work"></ul></div>
+        <div class="category-section" id="studyList"><span class="category-title">📚 เรียน (Study)</span><ul id="study"></ul></div>
+        <div class="category-section" id="otherList"><span class="category-title">✨ ส่วนตัว (Other)</span><ul id="other"></ul></div>
     </div>
-    <ul id="taskList"></ul>
+    <button id="addBtn" onclick="toggleModal(true)">+ เพิ่มรายการใหม่</button>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h3>เพิ่มรายการคิว 💖</h3>
+        <input type="text" id="taskInput" placeholder="พิมพ์ชื่อคิว...">
+        <select id="catSelect">
+            <option value="work">งาน (Work)</option>
+            <option value="study">เรียน (Study)</option>
+            <option value="other">ส่วนตัว (Other)</option>
+        </select>
+        <button onclick="addTask()">บันทึก</button>
+        <button onclick="toggleModal(false)" style="background:none; color:#ccc;">ยกเลิก</button>
+    </div>
 </div>
 
 <script>
+    function toggleModal(show) { document.getElementById('modal').style.display = show ? 'flex' : 'none'; }
     function addTask() {
-        let input = document.getElementById("taskInput");
-        if (input.value === "") return;
+        let task = document.getElementById('taskInput').value;
+        let cat = document.getElementById('catSelect').value;
+        if (!task) return;
         
-        let li = document.createElement("li");
-        li.innerHTML = `${input.value} <button onclick="this.parentElement.classList.toggle('done')">✓</button>`;
-        document.getElementById("taskList").appendChild(li);
-        input.value = "";
+        let li = document.createElement('li');
+        li.innerHTML = `${task} <span onclick="this.parentElement.remove()" style="cursor:pointer; float:right;">🗑️</span>`;
+        document.getElementById(cat).appendChild(li);
+        
+        document.getElementById('taskInput').value = '';
+        toggleModal(false);
     }
 </script>
 </body>
