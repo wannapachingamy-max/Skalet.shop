@@ -2,68 +2,41 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Queue System น่ารักๆ</title>
+    <title>My Pastel Queue ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #FFF5F7;
-            font-family: 'Kanit', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            color: #A0767D;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 30px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(255, 183, 197, 0.4);
-            width: 80%;
-            max-width: 400px;
-        }
-        h1 { color: #FF9AA2; }
-        .queue-number {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #FFB7C5;
-            margin: 20px 0;
-        }
-        button {
-            background-color: #FFB7C5;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        button:hover {
-            transform: scale(1.05);
-            background-color: #FFA1B5;
-        }
+        body { background-color: #FFF5F7; font-family: 'Kanit', sans-serif; color: #A0767D; display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; padding: 30px; border-radius: 30px; width: 100%; max-width: 400px; box-shadow: 0 10px 20px rgba(255, 183, 197, 0.3); }
+        h2 { text-align: center; color: #FF9AA2; }
+        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { border: 2px solid #FFD1DC; border-radius: 15px; padding: 10px; flex-grow: 1; outline: none; }
+        button { background-color: #FFB7C5; color: white; border: none; padding: 10px 20px; border-radius: 15px; cursor: pointer; }
+        ul { list-style: none; padding: 0; }
+        li { background: #FFF5F7; padding: 10px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .done { text-decoration: line-through; opacity: 0.6; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>คิวปัจจุบัน</h1>
-        <div class="queue-number" id="queueDisplay">01</div>
-        <button onclick="nextQueue()">รับคิวถัดไป</button>
+<div class="card">
+    <h2>รายการคิววันนี้ 🎀</h2>
+    <div class="input-group">
+        <input type="text" id="taskInput" placeholder="เพิ่มคิวงานตรงนี้...">
+        <button onclick="addTask()">เพิ่ม</button>
     </div>
+    <ul id="taskList"></ul>
+</div>
 
-    <script>
-        let currentQueue = 1;
-        function nextQueue() {
-            currentQueue++;
-            document.getElementById('queueDisplay').innerText = 
-                currentQueue.toString().padStart(2, '0');
-        }
-    </script>
+<script>
+    function addTask() {
+        let input = document.getElementById("taskInput");
+        if (input.value === "") return;
+        
+        let li = document.createElement("li");
+        li.innerHTML = `${input.value} <button onclick="this.parentElement.classList.toggle('done')">✓</button>`;
+        document.getElementById("taskList").appendChild(li);
+        input.value = "";
+    }
+</script>
 </body>
 </html>
-
